@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { GameService } from '../game.service';
+import { Game } from '../game';
 
 @Component({
   selector: 'app-team-selection',
@@ -6,9 +13,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./team-selection.component.css'],
 })
 export class TeamSelectionComponent implements OnInit {
-  constructor() {}
+  game$: Observable<Game>;
 
-  ngOnInit() {}
+  constructor(private service: GameService, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.game$ = this.route.paramMap.pipe(
+      switchMap((params) => {
+        return this.service.getGame();
+      })
+    );
+  }
 
   createTeam(playersInput: string[]): void {
     // const players = playersInput.filter((input) => input !== '').map((input) => input.trim());

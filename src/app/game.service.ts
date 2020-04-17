@@ -16,15 +16,15 @@ import { Game } from './game';
 @Injectable({
   providedIn: 'root',
 })
-export class GameServiceService {
-  private gamesUrl = 'https://turtles-server.herokuapp.com/'; // URL to web api
+export class GameService {
+  private gamesUrl = 'https://dominoes-backend.herokuapp.com/'; // URL to web api
   private etags: { [url: string]: string } = {}; // url => etag
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) {}
 
   /** GET the game from the server */
-  getGames(): Observable<Game> {
+  getGame(): Observable<Game> {
     const url = `${this.gamesUrl}/game`;
     delete this.etags[url];
     return timer(0, 1000).pipe(
