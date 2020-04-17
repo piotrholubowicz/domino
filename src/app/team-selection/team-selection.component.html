@@ -1,3 +1,12 @@
+<p>
+  Provide player names to start a game. The players will play in the order they
+  were defined:
+</p>
+<ul>
+  <li>Team A: players 1 and 3</li>
+  <li>Team B: players 2 and 4</li>
+</ul>
+
 <form>
   <div class="form-group">
     <label for="player1">Player 1</label>
@@ -5,21 +14,39 @@
       type="text"
       class="form-control"
       id="input1"
-      placeholder="First player's name"
+      placeholder="Team A"
       #player1
     />
   </div>
   <div class="form-group">
     <label for="player2">Player 2</label>
-    <input type="text" class="form-control" id="input2" #player2 />
+    <input
+      type="text"
+      class="form-control"
+      id="input2"
+      placeholder="Team B"
+      #player2
+    />
   </div>
   <div class="form-group">
     <label for="player3">Player 3</label>
-    <input type="text" class="form-control" id="input3" #player3 />
+    <input
+      type="text"
+      class="form-control"
+      id="input3"
+      placeholder="Team A"
+      #player3
+    />
   </div>
   <div class="form-group">
     <label for="player4">Player 4</label>
-    <input type="text" class="form-control" id="input4" #player4 />
+    <input
+      type="text"
+      class="form-control"
+      id="input4"
+      placeholder="Team B"
+      #player4
+    />
   </div>
   <div class="form-group">
     <!-- (click) passes input value to add() and then clears the input -->
@@ -30,7 +57,7 @@
         createTeam([player1.value, player2.value, player3.value, player4.value])
       "
     >
-      Start the game
+      Create the game
     </button>
   </div>
 </form>
