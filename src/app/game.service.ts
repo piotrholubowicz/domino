@@ -17,7 +17,7 @@ import { Game } from './game';
   providedIn: 'root',
 })
 export class GameService {
-  private gamesUrl = 'https://dominoes-backend.herokuapp.com/'; // URL to web api
+  private gamesUrl = 'https://dominoes-backend.herokuapp.com'; // URL to web api
   private etags: { [url: string]: string } = {}; // url => etag
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 

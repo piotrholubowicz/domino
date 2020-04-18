@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
 import { Game } from '../game';
@@ -15,14 +15,25 @@ import { Game } from '../game';
 export class TeamSelectionComponent implements OnInit {
   game$: Observable<Game>;
 
-  constructor(private service: GameService, private route: ActivatedRoute) {}
+  constructor(
+    private service: GameService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.game$ = this.route.paramMap.pipe(
-      switchMap((params) => {
-        return this.service.getGame();
+      switchMap((_) => {
+        return this.service.getGame().pipe(
+          tap((game) => {
+            if (game.state !== 'NO_GAME') {
+              this.router.navigate(['/player']);
+            }
+          })
+        );
       })
     );
+    this.game$.subscribe();
   }
 
   createTeam(playersInput: string[]): void {
