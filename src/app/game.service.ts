@@ -20,6 +20,8 @@ export class GameService {
   private gamesUrl = 'https://dominoes-backend.herokuapp.com'; // URL to web api
   private etags: { [url: string]: string } = {}; // url => etag
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private player: string;
+  private password: string;
 
   constructor(private http: HttpClient) {}
 
@@ -49,6 +51,16 @@ export class GameService {
       );
   }
 
+  /** POST: add a new game to the server */
+  createGame(players: string[]): Observable<Game> {
+    const url = `${this.gamesUrl}/game/`;
+    return this.http
+      .post<Game>(url, players, { headers: this.headers })
+      .pipe(
+        tap((newGame: Game) => console.log(`added game w/ id=${newGame.id}`)),
+        catchError(this.handleError<Game>('addGame'))
+      );
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -69,5 +81,9 @@ export class GameService {
       delete this.etags[error.url];
       return throwError(error);
     };
+  }
+
+  getPlayer() {
+    return this.player;
   }
 }
