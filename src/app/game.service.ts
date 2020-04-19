@@ -26,16 +26,30 @@ export class GameService {
   constructor(private http: HttpClient) {}
 
   /** GET the game from the server */
-  getGame(): Observable<Game> {
+  getGamePolling(): Observable<Game> {
     const url = `${this.gamesUrl}/game`;
     delete this.etags[url];
     return timer(0, 1000).pipe(
-      switchMap((_) => this.fetchUrl<Game>(url, 'getGames')), // a new http request on every tick
+      switchMap((_) => this.fetchUrl<Game>(url, 'getGamePolling')), // a new http request on every tick
       shareReplay({
         bufferSize: 1,
         refCount: true,
       }) // create a new Subject, which will act as a proxy
     );
+  }
+
+  /** GET the game from the server */
+  getGame(): Observable<Game> {
+    const url = `${this.gamesUrl}/game`;
+    delete this.etags[url];
+    return this.fetchUrl<Game>(url, 'getGame');
+  }
+
+  /** GET the players from the server */
+  getPlayers(): Observable<string[]> {
+    const url = `${this.gamesUrl}/players`;
+    delete this.etags[url];
+    return this.fetchUrl<string[]>(url, 'getPlayers');
   }
 
   fetchUrl<T>(url: string, operation: string): Observable<T> {
@@ -55,12 +69,23 @@ export class GameService {
   createGame(players: string[]): Observable<Game> {
     const url = `${this.gamesUrl}/game/`;
     return this.http
-      .post<Game>(url, players, { headers: this.headers })
+      .post<Game>(url, { players }, { headers: this.headers })
       .pipe(
-        tap((newGame: Game) => console.log(`added game w/ id=${newGame.id}`)),
+        tap((game: Game) => console.log(`added game w/ id=${game.id}`)),
         catchError(this.handleError<Game>('addGame'))
       );
   }
+
+  deleteGame(id: string): Observable<void> {
+    const url = `${this.gamesUrl}/game/${id}`;
+    return this.http
+      .delete<void>(url, { headers: this.headers })
+      .pipe(
+        tap((_) => console.log(`deleted game w/ id=${id}`)),
+        catchError(this.handleError<void>('deleteGame'))
+      );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -85,5 +110,9 @@ export class GameService {
 
   getPlayer() {
     return this.player;
+  }
+
+  setPlayer(player: string) {
+    this.player = player;
   }
 }

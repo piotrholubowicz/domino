@@ -1,1 +1,18 @@
-<p>player-selection works!</p>
+<div class="row">
+  <div class="col">
+    <div
+      *ngFor="let player of players"
+      class="btn-group"
+      role="group"
+      style="width: 100%; margin-top: 5%;"
+    >
+      {{ player }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <app-end-game (endGame)="onEndGame($event)"></app-end-game>
+  </div>
+</div>

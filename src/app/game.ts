@@ -1,5 +1,5 @@
 export interface Game {
-  id: number;
+  id: string;
   state: string;
   players: string[];
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { Observable, Subscription, EMPTY, of } from 'rxjs';
+import { switchMap, tap, catchError } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
 import { Game } from '../game';
@@ -13,6 +13,7 @@ import { Game } from '../game';
   styleUrls: ['./team-selection.component.css'],
 })
 export class TeamSelectionComponent implements OnInit, OnDestroy {
+  status$: Observable<string>;
   gameSub: Subscription;
 
   constructor(
@@ -20,19 +21,17 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
   ngOnInit() {
+    this.status$ = EMPTY;
     this.gameSub = this.route.paramMap
       .pipe(
         switchMap((_) => {
-          return this.service.getGame().pipe(
+          return this.service.getGamePolling().pipe(
             tap((game) => {
               console.log(game);
               if (game.state !== 'NO_GAME') {
-                if (this.service.getPlayer()) {
-                  this.router.navigate(['game']);
-                } else {
-                  this.router.navigate(['players']);
-                }
+                this.onGameCreated(game);
               }
             })
           );
@@ -41,15 +40,38 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  private onGameCreated(game: Game) {
+    if (game.players.includes(this.service.getPlayer())) {
+      this.router.navigate(['game']);
+    } else {
+      this.service.setPlayer(undefined);
+      this.router.navigate(['players']);
+    }
+  }
+
   ngOnDestroy(): void {
     this.gameSub.unsubscribe();
   }
 
   createTeam(playersInput: string[]): void {
-    // const players = playersInput.filter((input) => input !== '').map((input) => input.trim());
-    // const game: Game = GameEngine.createGame(players);
-    // if (game) {
-    //   this.service.addGame(game).subscribe();
-    // }
+    console.log('creating the game');
+    this.status$ = EMPTY;
+    const players = playersInput
+      .filter((input) => input !== '')
+      .map((input) => input.trim());
+    this.service
+      .createGame(players)
+      .pipe(
+        tap((game) => {
+          this.onGameCreated(game);
+        }),
+        catchError(
+          (error: any): Observable<string> => {
+            this.status$ = of(error.error);
+            return EMPTY;
+          }
+        )
+      )
+      .subscribe();
   }
 }
