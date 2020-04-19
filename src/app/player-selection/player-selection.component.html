@@ -1,3 +1,7 @@
+<div *ngIf="status$ | async as status" class="alert alert-danger" role="alert">
+  {{ status }}
+</div>
+
 <div class="row">
   <div class="col"></div>
   <div class="col-6">
@@ -7,6 +11,7 @@
       class="btn btn-outline-primary btn-lg btn-block"
       *ngFor="let player of players"
       style="margin-top: 5%; margin-bottom: 5%;"
+      (click)="onPlayerSelected(player)"
     >
       {{ player }}
     </button>
@@ -15,6 +20,7 @@
       type="button"
       class="btn btn-outline-secondary btn-lg btn-block"
       style="margin-top: 5%; margin-bottom: 5%;"
+      (click)="onPlayerSelected()"
     >
       Observe the game as a guest
     </button>

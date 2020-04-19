@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+
+import { Observable, EMPTY, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
 import { GameService } from '../game.service';
 
 @Component({
@@ -9,15 +13,34 @@ import { GameService } from '../game.service';
 })
 export class PlayerSelectionComponent implements OnInit {
   players: string[];
+  status$: Observable<string>;
 
-  constructor(
-    private service: GameService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private service: GameService, private router: Router) {}
 
   ngOnInit(): void {
+    this.status$ = EMPTY;
     this.service.getPlayers().subscribe((players) => (this.players = players));
+  }
+
+  onPlayerSelected(player?: string): void {
+    if (player) {
+      this.service
+        .pickPlayer(player)
+        .pipe(
+          tap((_) => {
+            this.router.navigate(['game']);
+          }),
+          catchError(
+            (error: any): Observable<string> => {
+              this.status$ = of(error.error);
+              return EMPTY;
+            }
+          )
+        )
+        .subscribe();
+    } else {
+      this.router.navigate(['game']);
+    }
   }
 
   onEndGame(event: any) {

@@ -76,6 +76,7 @@ export class GameService {
       );
   }
 
+  /** DELETE: delete the game */
   deleteGame(id: string): Observable<void> {
     const url = `${this.gamesUrl}/game/${id}`;
     return this.http
@@ -83,6 +84,22 @@ export class GameService {
       .pipe(
         tap((_) => console.log(`deleted game w/ id=${id}`)),
         catchError(this.handleError<void>('deleteGame'))
+      );
+  }
+
+  pickPlayer(player: string): Observable<void> {
+    const url = `${this.gamesUrl}/players/${player}`;
+    const password = `${Math.floor(Math.random() * 1000)}`;
+    return this.http
+      .put<void>(url, { password }, { headers: this.headers })
+      .pipe(
+        tap((_) => {
+          console.log(`picked player ${player}`);
+          this.player = player;
+          this.password = password;
+          // TODO store creds in a cookie in case of page reloads
+        }),
+        catchError(this.handleError<void>('pickPlayer'))
       );
   }
 
@@ -112,7 +129,8 @@ export class GameService {
     return this.player;
   }
 
-  setPlayer(player: string) {
-    this.player = player;
+  resetPlayer() {
+    this.player = undefined;
+    this.password = undefined;
   }
 }

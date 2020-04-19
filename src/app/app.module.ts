@@ -12,6 +12,7 @@ import {
   EndGameComponent,
   EndGameConfirmComponent,
 } from './end-game/end-game.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {
     TeamSelectionComponent,
     PlayerSelectionComponent,
     EndGameComponent,
+    GameComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }, GameService],
