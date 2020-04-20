@@ -31,10 +31,11 @@ export class GameService {
 
   /** GET the game from the server */
   getGamePolling(): Observable<Game> {
-    const url = `${this.gamesUrl}/game`;
+    let url = `${this.gamesUrl}/game`;
     delete this.etags[url];
     return timer(0, 1000).pipe(
       switchMap((_) => this.fetchUrl<Game>(url, 'getGamePolling')), // a new http request on every tick
+      tap((game) => (url = `${this.gamesUrl}/game/${game.id}`)),
       shareReplay({
         bufferSize: 1,
         refCount: true,
