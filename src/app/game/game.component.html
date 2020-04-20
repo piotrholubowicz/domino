@@ -1,1 +1,9 @@
-<p>welcome, {{ player() }}!</p>
+<div *ngIf="game$ | async as game">
+  <p>welcome, {{ player() }}!</p>
+
+  <div class="row">
+    <div class="col">
+      <app-end-game (endGame)="onEndGame($event, game.id)"></app-end-game>
+    </div>
+  </div>
+</div>
