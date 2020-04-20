@@ -44,4 +44,21 @@ export class GameComponent implements OnInit {
   player(): string {
     return this.service.getPlayer() || 'Guest';
   }
+
+  playerName(game: Game, pos: string): string {
+    const playerIdx = this.service.getPlayer()
+      ? game.players.indexOf(this.player())
+      : 0;
+    switch (pos) {
+      case 'south':
+        return game.players[playerIdx];
+      case 'west':
+        return game.players[(playerIdx + 1) % 4];
+      case 'north':
+        return game.players[(playerIdx + 2) % 4];
+      case 'east':
+        return game.players[(playerIdx + 3) % 4];
+    }
+    return 'foo';
+  }
 }
