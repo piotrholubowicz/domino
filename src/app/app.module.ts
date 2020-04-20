@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieModule } from 'ngx-cookie';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +23,12 @@ import { GameComponent } from './game/game.component';
     EndGameComponent,
     GameComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    CookieModule.forRoot(),
+  ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }, GameService],
   bootstrap: [AppComponent],
   entryComponents: [EndGameConfirmComponent],

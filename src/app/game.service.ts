@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie';
 
 import { Observable, of, timer, Subject, EMPTY, throwError } from 'rxjs';
 import {
@@ -23,7 +24,10 @@ export class GameService {
   private player: string;
   private password: string;
 
-  constructor(private http: HttpClient) {}
+  private readonly cookiePlayer = 'domino-player';
+  private readonly cookiePassword = 'domino-password';
+
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   /** GET the game from the server */
   getGamePolling(): Observable<Game> {
@@ -97,9 +101,16 @@ export class GameService {
           console.log(`picked player ${player}`);
           this.player = player;
           this.password = password;
-          // TODO store creds in a cookie in case of page reloads
+          const cookieOptions = { expires: this.minutesFromNow(30) };
+          this.cookieService.put(this.cookiePlayer, player, cookieOptions);
+          this.cookieService.put(this.cookiePassword, password, cookieOptions);
         }),
-        catchError(this.handleError<void>('pickPlayer'))
+        catchError(
+          (error: any): Observable<void> => {
+            this.resetPlayer();
+            return EMPTY;
+          }
+        )
       );
   }
 
@@ -125,12 +136,24 @@ export class GameService {
     };
   }
 
+  private minutesFromNow(m: number): Date {
+    return new Date(Date.now() + m * 60 * 1000);
+  }
+
   getPlayer() {
+    const player = this.cookieService.get(this.cookiePlayer);
+    const password = this.cookieService.get(this.cookiePassword);
+    if (player && password) {
+      this.player = player;
+      this.password = password;
+    }
     return this.player;
   }
 
   resetPlayer() {
     this.player = undefined;
     this.password = undefined;
+    this.cookieService.remove(this.cookiePlayer);
+    this.cookieService.remove(this.cookiePassword);
   }
 }
