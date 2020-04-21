@@ -1,4 +1,4 @@
-<div *ngIf="game$ | async as game">
+<div *ngIf="game">
   <p>welcome, {{ player() }}!</p>
 
   <!-- Top player -->
@@ -7,11 +7,17 @@
     <div class="col-8">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ playerName(game, "north") }}</p>
+          <p class="text-center">
+            {{ game.players[playerIdx("north")] }}
+          </p>
         </div>
       </div>
       <div class="row">
-        <div class="col-12"><p class="text-center">pieces will go here</p></div>
+        <div class="col-12 piece-row">
+          <div *ngFor="let piece of hand('north')" class="piece">
+            <app-piece [value]="piece" [orientation]="'vertical'"></app-piece>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col"></div>
@@ -22,12 +28,14 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ playerName(game, "west") }}</p>
+          <p class="text-center">{{ game.players[playerIdx("west")] }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <p class="text-center">pieces will go here</p>
+        <div class="col-12 piece-row">
+          <div *ngFor="let piece of hand('west')" class="piece">
+            <app-piece [value]="piece" [orientation]="'horizontal'"></app-piece>
+          </div>
         </div>
       </div>
     </div>
@@ -39,12 +47,14 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ playerName(game, "east") }}</p>
+          <p class="text-center">{{ game.players[playerIdx("east")] }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <p class="text-center">pieces will go here</p>
+        <div class="col-12 piece-row">
+          <div *ngFor="let piece of hand('east')" class="piece">
+            <app-piece [value]="piece" [orientation]="'horizontal'"></app-piece>
+          </div>
         </div>
       </div>
     </div>
@@ -55,13 +65,24 @@
     <div class="col"></div>
     <div class="col-8">
       <div class="row">
-        <div class="col-12">
-          <p class="text-center">pieces will go here</p>
+        <div class="col-12 piece-row">
+          <div *ngFor="let piece of hand('south')" class="piece">
+            <app-piece
+              [value]="piece"
+              [orientation]="'vertical'"
+              [disabled]="isDisabled(piece)"
+              [playable]="!isDisabled(piece)"
+              [selected]="isSelected(piece)"
+              (selectionChanged)="onPieceSelectionChanged($event)"
+            ></app-piece>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ playerName(game, "south") }}</p>
+          <p class="text-center">
+            {{ game.players[playerIdx("south")] }}
+          </p>
         </div>
       </div>
     </div>
@@ -70,7 +91,7 @@
 
   <div class="row">
     <div class="col">
-      <app-end-game (endGame)="onEndGame($event, game.id)"></app-end-game>
+      <app-end-game (endGame)="onEndGame($event)"></app-end-game>
     </div>
   </div>
 </div>

@@ -1,0 +1,26 @@
+.piece {
+  background: blue;
+  color: white;
+}
+
+.piece.vertical {
+  width: 35px;
+  height: 70px;
+}
+
+.piece.horizontal {
+  width: 70px;
+  height: 35px;
+}
+
+.piece.disabled {
+  background: grey;
+}
+
+.piece.playable {
+  cursor: pointer;
+}
+
+.piece.selected {
+  color: red;
+}

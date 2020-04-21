@@ -1,0 +1,13 @@
+<div
+  class="piece"
+  [ngClass]="{
+    vertical: orientation === 'vertical',
+    horizontal: orientation === 'horizontal',
+    disabled: disabled,
+    playable: playable,
+    selected: selected
+  }"
+  (click)="click()"
+>
+  {{ value ? value[0] : "?" }} | {{ value ? value[1] : "?" }}
+</div>

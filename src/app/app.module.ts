@@ -14,6 +14,7 @@ import {
   EndGameConfirmComponent,
 } from './end-game/end-game.component';
 import { GameComponent } from './game/game.component';
+import { PieceComponent } from './piece/piece.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { GameComponent } from './game/game.component';
     PlayerSelectionComponent,
     EndGameComponent,
     GameComponent,
+    PieceComponent,
   ],
   imports: [
     BrowserModule,

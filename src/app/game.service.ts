@@ -75,6 +75,7 @@ export class GameService {
   }
 
   addAuth(headers: HttpHeaders): HttpHeaders {
+    this.loadPlayerFromCookies();
     return this.player && this.password
       ? this.headers.set(
           'Authorization',
@@ -122,7 +123,7 @@ export class GameService {
         catchError(
           (error: any): Observable<void> => {
             this.resetPlayer();
-            return EMPTY;
+            return throwError(error);
           }
         )
       );
@@ -141,6 +142,7 @@ export class GameService {
     return (error: any): Observable<T> => {
       if (error.status === 304) {
         // This is working as intended
+        console.log('304 received');
         return fallback;
       }
       console.error(error); // log to console instead
@@ -155,13 +157,17 @@ export class GameService {
   }
 
   getPlayer() {
+    this.loadPlayerFromCookies();
+    return this.player;
+  }
+
+  private loadPlayerFromCookies() {
     const player = this.cookieService.get(this.cookiePlayer);
     const password = this.cookieService.get(this.cookiePassword);
     if (player && password) {
       this.player = player;
       this.password = password;
     }
-    return this.player;
   }
 
   resetPlayer() {

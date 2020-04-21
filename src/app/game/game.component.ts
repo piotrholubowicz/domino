@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, EMPTY, of } from 'rxjs';
+import { Observable, EMPTY, of, Subscription } from 'rxjs';
 import { catchError, tap, switchMap } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
@@ -12,8 +12,10 @@ import { Game } from '../game';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css'],
 })
-export class GameComponent implements OnInit {
-  game$: Observable<Game>;
+export class GameComponent implements OnInit, OnDestroy {
+  game: Game;
+  gameSubscription: Subscription;
+  selectedPiece: number[];
 
   constructor(
     private service: GameService,
@@ -22,21 +24,30 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.game$ = this.route.paramMap.pipe(
-      switchMap((_) => {
-        return this.service.getGamePolling().pipe(
-          tap((game) => {
-            if (game.state === 'NO_GAME') {
-              this.router.navigate(['team']);
-            }
-          })
-        );
-      })
-    );
+    this.route.paramMap
+      .pipe(
+        switchMap((_) => {
+          return this.service.getGamePolling().pipe(
+            tap((game) => {
+              if (game.state === 'NO_GAME') {
+                this.router.navigate(['team']);
+              }
+            })
+          );
+        })
+      )
+      .subscribe((game) => {
+        console.log('new game!');
+        this.game = game;
+      });
   }
 
-  onEndGame(event: any, id: string) {
-    this.service.deleteGame(id).subscribe((_) => {
+  ngOnDestroy(): void {
+    this.gameSubscription.unsubscribe();
+  }
+
+  onEndGame(event: any) {
+    this.service.deleteGame(this.game.id).subscribe((_) => {
       this.router.navigate(['team']);
     });
   }
@@ -45,20 +56,57 @@ export class GameComponent implements OnInit {
     return this.service.getPlayer() || 'Guest';
   }
 
-  playerName(game: Game, pos: string): string {
-    const playerIdx = this.service.getPlayer()
-      ? game.players.indexOf(this.player())
+  playerIdx(pos: string): number {
+    const currPlayerIdx = this.service.getPlayer()
+      ? this.game.players.indexOf(this.player())
       : 0;
     switch (pos) {
       case 'south':
-        return game.players[playerIdx];
+        return currPlayerIdx;
       case 'west':
-        return game.players[(playerIdx + 1) % 4];
+        return (currPlayerIdx + 1) % 4;
       case 'north':
-        return game.players[(playerIdx + 2) % 4];
+        return (currPlayerIdx + 2) % 4;
       case 'east':
-        return game.players[(playerIdx + 3) % 4];
+        return (currPlayerIdx + 3) % 4;
     }
-    return 'foo';
+    throw new Error(`Unrecognized position ${pos}`);
+  }
+
+  hand(pos: string): number[][] {
+    const pieces = this.game.hands[this.game.players[this.playerIdx(pos)]];
+    if (Array.isArray(pieces)) {
+      return pieces;
+    }
+    // pieces are face down
+    return new Array(pieces).fill(undefined);
+  }
+
+  isDisabled(piece: number[]): boolean {
+    return false;
+  }
+
+  isPlayable(piece: number[]): boolean {
+    return false;
+  }
+
+  onPieceSelectionChanged(piece: number[]) {
+    if (this.isSelected(piece)) {
+      this.selectedPiece = undefined;
+    } else {
+      this.selectedPiece = piece;
+    }
+  }
+
+  isSelected(p1: number[]) {
+    const p2 = this.selectedPiece;
+    return (
+      p1 &&
+      p2 &&
+      p1.length === 2 &&
+      p2.length === 2 &&
+      ((p1[0] === p2[0] && p1[1] === p2[1]) ||
+        (p1[0] === p2[1] && p1[1] === p2[0]))
+    );
   }
 }
