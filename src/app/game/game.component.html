@@ -8,7 +8,11 @@
       <div class="row">
         <div class="col-12">
           <p class="text-center">
-            {{ game.players[playerIdx("north")] }}
+            <span
+              *ngIf="game.players[playerIdx('north')] as p"
+              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
+              >{{ p }}</span
+            >
           </p>
         </div>
       </div>
@@ -28,7 +32,13 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ game.players[playerIdx("west")] }}</p>
+          <p class="text-center">
+            <span
+              *ngIf="game.players[playerIdx('west')] as p"
+              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
+              >{{ p }}</span
+            >
+          </p>
         </div>
       </div>
       <div class="row">
@@ -47,7 +57,13 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">{{ game.players[playerIdx("east")] }}</p>
+          <p class="text-center">
+            <span
+              *ngIf="game.players[playerIdx('east')] as p"
+              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
+              >{{ p }}</span
+            >
+          </p>
         </div>
       </div>
       <div class="row">
@@ -71,7 +87,7 @@
               [value]="piece"
               [orientation]="'vertical'"
               [disabled]="isDisabled(piece)"
-              [playable]="!isDisabled(piece)"
+              [playable]="isPlayable(piece)"
               [selected]="isSelected(piece)"
               (selectionChanged)="onPieceSelectionChanged($event)"
             ></app-piece>
@@ -81,7 +97,11 @@
       <div class="row">
         <div class="col-12">
           <p class="text-center">
-            {{ game.players[playerIdx("south")] }}
+            <span
+              *ngIf="game.players[playerIdx('south')] as p"
+              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
+              >{{ p }}</span
+            >
           </p>
         </div>
       </div>

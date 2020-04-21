@@ -36,6 +36,7 @@ export class GameService {
     return timer(0, 1000).pipe(
       switchMap((_) => this.fetchUrl<Game>(url, 'getGamePolling')), // a new http request on every tick
       tap((game) => (url = `${this.gamesUrl}/game/${game.id}`)),
+      distinctUntilChanged(),
       shareReplay({
         bufferSize: 1,
         refCount: true,

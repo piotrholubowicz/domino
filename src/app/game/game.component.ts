@@ -13,6 +13,15 @@ import { Game } from '../game';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit, OnDestroy {
+  // where you can put a piece
+  PiecePlayOption = Object.freeze({
+    CANT_PLAY: 1,
+    START: 2,
+    LEFT: 3,
+    RIGHT: 4,
+    LEFT_AND_RIGHT: 5,
+  });
+
   game: Game;
   gameSubscription: Subscription;
   selectedPiece: number[];
@@ -56,6 +65,10 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.service.getPlayer() || 'Guest';
   }
 
+  currentPlayer(): string {
+    return this.game.currentPlayer;
+  }
+
   playerIdx(pos: string): number {
     const currPlayerIdx = this.service.getPlayer()
       ? this.game.players.indexOf(this.player())
@@ -83,11 +96,44 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   isDisabled(piece: number[]): boolean {
-    return false;
+    return (
+      this.currentPlayer() === this.player() &&
+      this.whereCanBePlayed(piece) === this.PiecePlayOption.CANT_PLAY
+    );
   }
 
   isPlayable(piece: number[]): boolean {
-    return false;
+    return (
+      this.currentPlayer() === this.player() &&
+      this.whereCanBePlayed(piece) !== this.PiecePlayOption.CANT_PLAY
+    );
+  }
+
+  whereCanBePlayed(piece: number[]): number {
+    if (this.game.table.length === 0) {
+      if (this.game.scoreLog.length === 0) {
+        // only [6,6] can start the game
+        return this.isPiecesEqual(piece, [6, 6])
+          ? this.PiecePlayOption.START
+          : this.PiecePlayOption.CANT_PLAY;
+      }
+      // later any piece can start
+      return this.PiecePlayOption.START;
+    }
+    const leftEnd = this.game.table[0][0];
+    const canPlayLeft = piece[0] === leftEnd || piece[1] === leftEnd;
+    const rightEnd = this.game.table[this.game.table.length - 1][1];
+    const canPlayRight = piece[0] === rightEnd || piece[1] === rightEnd;
+    if (canPlayLeft && canPlayRight) {
+      return this.PiecePlayOption.LEFT_AND_RIGHT;
+    }
+    if (canPlayLeft) {
+      return this.PiecePlayOption.LEFT;
+    }
+    if (canPlayRight) {
+      return this.PiecePlayOption.RIGHT;
+    }
+    return this.PiecePlayOption.CANT_PLAY;
   }
 
   onPieceSelectionChanged(piece: number[]) {
@@ -99,7 +145,10 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   isSelected(p1: number[]) {
-    const p2 = this.selectedPiece;
+    return this.isPiecesEqual(p1, this.selectedPiece);
+  }
+
+  isPiecesEqual(p1: number[], p2: number[]) {
     return (
       p1 &&
       p2 &&
