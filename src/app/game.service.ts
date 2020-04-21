@@ -58,9 +58,7 @@ export class GameService {
   }
 
   fetchUrl<T>(url: string, operation: string): Observable<T> {
-    const headers = this.etags[url]
-      ? this.headers.set('If-None-Match', this.etags[url])
-      : this.headers;
+    const headers = this.addAuth(this.addEtag(url, this.headers));
     return this.http
       .get<T>(url, { observe: 'response', headers })
       .pipe(
@@ -68,6 +66,21 @@ export class GameService {
         map((resp) => resp.body),
         catchError(this.handleError<T>(operation))
       );
+  }
+
+  addEtag(url: string, headers: HttpHeaders): HttpHeaders {
+    return this.etags[url]
+      ? this.headers.set('If-None-Match', this.etags[url])
+      : this.headers;
+  }
+
+  addAuth(headers: HttpHeaders): HttpHeaders {
+    return this.player && this.password
+      ? this.headers.set(
+          'Authorization',
+          `Basic ${btoa(`${this.player}:${this.password}`)}`
+        )
+      : this.headers;
   }
 
   /** POST: add a new game to the server */
