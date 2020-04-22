@@ -1,5 +1,24 @@
 <div *ngIf="game">
-  <p>welcome, {{ player() }}!</p>
+  <div class="row">
+    <div class="col-2">
+      <p>Welcome, {{ player() }}!</p>
+    </div>
+    <div class="col-8 text-center">
+      <p *ngIf="game.lastMove">
+        <em
+          >{{ game.lastMove.player }}
+          {{
+            game.lastMove.move === "pass"
+              ? "passed"
+              : "played [" + game.lastMove.move.piece + "]"
+          }}</em
+        >
+      </p>
+    </div>
+    <div class="col-2">
+      <p>{{ game.scoreLog[game.scoreLog.length - 1] }}</p>
+    </div>
+  </div>
 
   <!-- Top player -->
   <div class="row">
@@ -52,6 +71,9 @@
     <!-- Board -->
     <div class="col-8" style="background-color: #dddddd;">
       <p class="text-center">board will go here</p>
+      <p class="text-center">
+        <span *ngFor="let piece of game.table">[{{ piece }}] </span>
+      </p>
     </div>
     <!-- Right player -->
     <div class="col-2">
