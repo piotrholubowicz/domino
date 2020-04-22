@@ -107,6 +107,20 @@ export class GameService {
       );
   }
 
+  /** POST: make a move */
+  makeMove(id: string, move: any): Observable<void> {
+    const url = `${this.gamesUrl}/game/${id}`;
+    const headers = this.addAuth(this.headers);
+    return this.http
+      .post<void>(url, move, { headers })
+      .pipe(
+        tap((_) =>
+          console.log(`made a move ${move.piece ? move.piece : move}`)
+        ),
+        catchError(this.handleError<void>('makeMove'))
+      );
+  }
+
   pickPlayer(player: string): Observable<void> {
     const url = `${this.gamesUrl}/players/${player}`;
     const password = `${Math.floor(Math.random() * 1000)}`;

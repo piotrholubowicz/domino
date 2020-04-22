@@ -189,5 +189,18 @@ export class TableComponent implements OnInit, OnDestroy {
     );
   }
 
-  play(type: string) {}
+  play(type: string) {
+    const move =
+      type === 'pass'
+        ? { move: 'pass' }
+        : {
+            move: {
+              piece: this.selectedPiece,
+              placement: type === 'start' ? 'left' : type,
+            },
+          };
+    this.service
+      .makeMove(this.game.id, move)
+      .subscribe((_) => (this.selectedPiece = undefined));
+  }
 }
