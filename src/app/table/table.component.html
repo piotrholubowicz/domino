@@ -109,12 +109,75 @@
     <div class="col"></div>
   </div>
 
-  <div class="row">
-    <div class="col">
+  <div class="row button-row">
+    <div class="col-4">
       <app-end-game (endGame)="onEndGame($event)"></app-end-game>
-      <button type="button" class="btn btn-secondary" (click)="logout()">
+      <button
+        *ngIf="isSignedIn()"
+        type="button"
+        class="btn btn-secondary"
+        (click)="logout()"
+      >
         Log out
       </button>
+    </div>
+    <div class="col-4 text-center">
+      <ng-container
+        *ngIf="isSignedIn()"
+        [ngSwitch]="whereCanSelectedBePlayed()"
+      >
+        <button
+          *ngSwitchCase="PiecePlayOption.START"
+          type="button"
+          class="btn btn-success"
+          (click)="play('start')"
+        >
+          Play
+        </button>
+        <button
+          *ngSwitchCase="PiecePlayOption.LEFT"
+          type="button"
+          class="btn btn-success"
+          (click)="play('left')"
+        >
+          Play
+        </button>
+        <button
+          *ngSwitchCase="PiecePlayOption.RIGHT"
+          type="button"
+          class="btn btn-success"
+          (click)="play('right')"
+        >
+          Play
+        </button>
+        <button
+          *ngSwitchCase="PiecePlayOption.LEFT_AND_RIGHT"
+          type="button"
+          class="btn btn-success"
+          (click)="play('left')"
+        >
+          Play left
+        </button>
+        <button
+          *ngSwitchCase="PiecePlayOption.LEFT_AND_RIGHT"
+          type="button"
+          class="btn btn-success"
+          (click)="play('right')"
+        >
+          Play right
+        </button>
+        <button
+          *ngSwitchCase="PiecePlayOption.PASS"
+          type="button"
+          class="btn btn-success"
+          (click)="play('pass')"
+        >
+          Pass
+        </button>
+        <button *ngSwitchDefault type="button" class="btn btn-success" disabled>
+          Play
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>

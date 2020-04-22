@@ -20,6 +20,7 @@ export class TableComponent implements OnInit, OnDestroy {
     LEFT: 3,
     RIGHT: 4,
     LEFT_AND_RIGHT: 5,
+    PASS: 6,
   });
 
   game: Game;
@@ -67,6 +68,10 @@ export class TableComponent implements OnInit, OnDestroy {
     });
   }
 
+  isSignedIn(): boolean {
+    return this.service.getPlayer() !== undefined;
+  }
+
   player(): string {
     return this.service.getPlayer() || 'Guest';
   }
@@ -76,7 +81,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   playerIdx(pos: string): number {
-    const currPlayerIdx = this.service.getPlayer()
+    const currPlayerIdx = this.isSignedIn()
       ? this.game.players.indexOf(this.player())
       : 0;
     switch (pos) {
@@ -142,6 +147,25 @@ export class TableComponent implements OnInit, OnDestroy {
     return this.PiecePlayOption.CANT_PLAY;
   }
 
+  whereCanSelectedBePlayed(): number {
+    if (this.player() !== this.currentPlayer()) {
+      return undefined;
+    }
+    if (this.selectedPiece) {
+      return this.whereCanBePlayed(this.selectedPiece);
+    }
+    if (
+      // this function should only be called for a signed-in player's hand
+      !(this.game.hands[this.player()] as number[][]).some((piece) =>
+        this.isPlayable(piece)
+      )
+    ) {
+      return this.PiecePlayOption.PASS;
+    }
+    // there are playable pieces but none is selected
+    return undefined;
+  }
+
   onPieceSelectionChanged(piece: number[]) {
     if (this.isSelected(piece)) {
       this.selectedPiece = undefined;
@@ -164,4 +188,6 @@ export class TableComponent implements OnInit, OnDestroy {
         (p1[0] === p2[1] && p1[1] === p2[0]))
     );
   }
+
+  play(type: string) {}
 }
