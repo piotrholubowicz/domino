@@ -13,7 +13,7 @@ import {
   EndGameComponent,
   EndGameConfirmComponent,
 } from './end-game/end-game.component';
-import { GameComponent } from './game/game.component';
+import { TableComponent } from './table/table.component';
 import { PieceComponent } from './piece/piece.component';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { PieceComponent } from './piece/piece.component';
     TeamSelectionComponent,
     PlayerSelectionComponent,
     EndGameComponent,
-    GameComponent,
+    TableComponent,
     PieceComponent,
   ],
   imports: [

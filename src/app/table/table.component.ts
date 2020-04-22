@@ -8,11 +8,11 @@ import { GameService } from '../game.service';
 import { Game } from '../game';
 
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css'],
+  selector: 'app-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.css'],
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class TableComponent implements OnInit, OnDestroy {
   // where you can put a piece
   PiecePlayOption = Object.freeze({
     CANT_PLAY: 1,

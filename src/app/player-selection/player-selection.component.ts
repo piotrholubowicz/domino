@@ -28,7 +28,7 @@ export class PlayerSelectionComponent implements OnInit {
         .pickPlayer(player)
         .pipe(
           tap((_) => {
-            this.router.navigate(['game']);
+            this.router.navigate(['table']);
           }),
           catchError(
             (error: any): Observable<string> => {
@@ -39,7 +39,7 @@ export class PlayerSelectionComponent implements OnInit {
         )
         .subscribe();
     } else {
-      this.router.navigate(['game']);
+      this.router.navigate(['table']);
     }
   }
 

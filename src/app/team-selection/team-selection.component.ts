@@ -42,7 +42,7 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
 
   private onGameCreated(game: Game) {
     if (game.players.includes(this.service.getPlayer())) {
-      this.router.navigate(['game']);
+      this.router.navigate(['table']);
     } else {
       this.service.resetPlayer();
       this.router.navigate(['players']);
