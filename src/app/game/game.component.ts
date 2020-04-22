@@ -33,7 +33,7 @@ export class GameComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap
+    this.gameSubscription = this.route.paramMap
       .pipe(
         switchMap((_) => {
           return this.service.getGamePolling().pipe(
@@ -58,6 +58,12 @@ export class GameComponent implements OnInit, OnDestroy {
   onEndGame(event: any) {
     this.service.deleteGame(this.game.id).subscribe((_) => {
       this.router.navigate(['team']);
+    });
+  }
+
+  logout() {
+    this.service.logout().subscribe((_) => {
+      this.router.navigate(['players']);
     });
   }
 

@@ -130,6 +130,23 @@ export class GameService {
       );
   }
 
+  /** DELETE: reset the player */
+  logout(): Observable<void> {
+    if (!this.player) {
+      throw new Error('Cannot log out if not logged in');
+    }
+    const url = `${this.gamesUrl}/players/${this.player}`;
+    return this.http
+      .delete<void>(url, { headers: this.headers })
+      .pipe(
+        tap((_) => {
+          console.log(`deleted player ${this.player}`);
+          this.resetPlayer();
+        }),
+        catchError(this.handleError<void>('deletePlayer'))
+      );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -143,7 +160,12 @@ export class GameService {
     return (error: any): Observable<T> => {
       if (error.status === 304) {
         // This is working as intended
-        console.log('304 received');
+        return fallback;
+      }
+      if (error.status === 403) {
+        // Unauthorized - we need to reset credentials
+        console.log('403 received');
+        this.resetPlayer();
         return fallback;
       }
       console.error(error); // log to console instead
