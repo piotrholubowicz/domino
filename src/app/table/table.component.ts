@@ -97,6 +97,26 @@ export class TableComponent implements OnInit, OnDestroy {
     throw new Error(`Unrecognized position ${pos}`);
   }
 
+  status(): string {
+    if (!this.game.lastMove) {
+      return '';
+    }
+    if (this.game.lastMove.move === 'pass') {
+      return `${this.game.lastMove.player} passed`;
+    }
+    return `${this.game.lastMove.player} played [${this.game.lastMove.move.piece}]`;
+  }
+
+  score(): number[] {
+    return this.game.scoreLog.reduce(
+      (total, roundScore) => [
+        total[0] + roundScore[0],
+        total[1] + roundScore[1],
+      ],
+      [0, 0]
+    );
+  }
+
   hand(pos: string): number[][] {
     const pieces = this.game.hands[this.game.players[this.playerIdx(pos)]];
     if (Array.isArray(pieces)) {

@@ -1,3 +1,11 @@
+.board-row-top {
+  border-top: 1px solid #ccc;
+}
+
+.board-row-bottom {
+  border-bottom: 1px solid #ccc;
+}
+
 .piece-row {
   text-align: center;
 }

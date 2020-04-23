@@ -5,23 +5,16 @@
     </div>
     <div class="col-8 text-center">
       <p *ngIf="game.lastMove">
-        <em
-          >{{ game.lastMove.player }}
-          {{
-            game.lastMove.move === "pass"
-              ? "passed"
-              : "played [" + game.lastMove.move.piece + "]"
-          }}</em
-        >
+        <em>{{ status() }}</em>
       </p>
     </div>
-    <div class="col-2">
-      <p>{{ game.scoreLog[game.scoreLog.length - 1] }}</p>
+    <div class="col-2 text-right">
+      <p *ngIf="score() as s">score: {{ s[0] }} | {{ s[1] }}</p>
     </div>
   </div>
 
   <!-- Top player -->
-  <div class="row">
+  <div class="row board-row-top">
     <div class="col"></div>
     <div class="col-8">
       <div class="row">
@@ -99,7 +92,7 @@
   </div>
 
   <!-- Bottom player -->
-  <div class="row">
+  <div class="row board-row-bottom">
     <div class="col"></div>
     <div class="col-8">
       <div class="row">
