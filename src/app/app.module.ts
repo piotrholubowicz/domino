@@ -15,6 +15,7 @@ import {
 } from './end-game/end-game.component';
 import { TableComponent } from './table/table.component';
 import { PieceComponent } from './piece/piece.component';
+import { BoardComponent } from './board/board.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { PieceComponent } from './piece/piece.component';
     EndGameComponent,
     TableComponent,
     PieceComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,

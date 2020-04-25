@@ -63,10 +63,7 @@
     </div>
     <!-- Board -->
     <div class="col-8" style="background-color: #dddddd;">
-      <p class="text-center">board will go here</p>
-      <p class="text-center">
-        <span *ngFor="let piece of game.table">[{{ piece }}] </span>
-      </p>
+      <app-board [game]="game"></app-board>
     </div>
     <!-- Right player -->
     <div class="col-2">
