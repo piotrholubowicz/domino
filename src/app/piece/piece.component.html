@@ -24,7 +24,9 @@
       faceup: value !== undefined,
       disabled: disabled,
       playable: playable,
-      selected: selected
+      selected: selected,
+      'dot-small': dotSize === 'small',
+      'dot-large': dotSize === 'large'
     }"
     (click)="click()"
   >

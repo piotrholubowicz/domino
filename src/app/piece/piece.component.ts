@@ -17,6 +17,8 @@ export class PieceComponent implements OnInit {
   // playable and selected by the player
   @Input() selected = false;
   // the player clicked on a playable piece
+  @Input() dotSize = 'large';
+  // the player clicked on a playable piece
   @Output() selectionChanged = new EventEmitter<number[]>();
 
   constructor() {}
