@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-end-game',
   templateUrl: './end-game.component.html',
-  styleUrls: ['./end-game.component.css'],
+  styleUrls: ['./end-game.component.scss'],
 })
 export class EndGameComponent implements OnInit {
   @Output() endGame = new EventEmitter<void>();

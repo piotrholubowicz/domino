@@ -9,7 +9,7 @@ import { GameService } from '../game.service';
 @Component({
   selector: 'app-player-selection',
   templateUrl: './player-selection.component.html',
-  styleUrls: ['./player-selection.component.css'],
+  styleUrls: ['./player-selection.component.scss'],
 })
 export class PlayerSelectionComponent implements OnInit {
   players: string[];

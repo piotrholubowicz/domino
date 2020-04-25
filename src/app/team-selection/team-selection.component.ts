@@ -10,7 +10,7 @@ import { Game } from '../game';
 @Component({
   selector: 'app-team-selection',
   templateUrl: './team-selection.component.html',
-  styleUrls: ['./team-selection.component.css'],
+  styleUrls: ['./team-selection.component.scss'],
 })
 export class TeamSelectionComponent implements OnInit, OnDestroy {
   status$: Observable<string>;
