@@ -23,6 +23,10 @@ export class PieceComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  arrayOf(n: number): number[] {
+    return new Array(n).fill(1);
+  }
+
   click(): void {
     if (this.value && this.playable) {
       this.selectionChanged.emit(this.value);

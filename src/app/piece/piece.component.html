@@ -1,13 +1,64 @@
-<div
-  class="piece"
-  [ngClass]="{
-    vertical: orientation === 'vertical',
-    horizontal: orientation === 'horizontal',
-    disabled: disabled,
-    playable: playable,
-    selected: selected
-  }"
-  (click)="click()"
->
-  {{ value ? value[0] : "?" }} | {{ value ? value[1] : "?" }}
-</div>
+<div *ngIf="orientation === 'vertical'; then vertical; else horizontal"></div>
+
+<ng-template #horizontal>
+  <div
+    class="piece"
+    [ngClass]="{
+      vertical: orientation === 'vertical',
+      horizontal: orientation === 'horizontal',
+      disabled: disabled,
+      playable: playable,
+      selected: selected
+    }"
+    (click)="click()"
+  >
+    {{ value ? value[0] : "?" }} | {{ value ? value[1] : "?" }}
+  </div>
+</ng-template>
+
+<ng-template #vertical>
+  <div
+    class="piece vertical"
+    [ngClass]="{
+      facedown: value === undefined,
+      faceup: value !== undefined,
+      disabled: disabled,
+      playable: playable,
+      selected: selected
+    }"
+    (click)="click()"
+  >
+    <ng-container *ngIf="value">
+      <div
+        class="dot-container"
+        [ngClass]="{
+          'dot-container-0': value[0] === 0,
+          'dot-container-1': value[0] === 1,
+          'dot-container-2': value[0] === 2,
+          'dot-container-3': value[0] === 3,
+          'dot-container-4': value[0] === 4,
+          'dot-container-5': value[0] === 5,
+          'dot-container-6': value[0] === 6
+        }"
+      >
+        <div *ngFor="let dot of arrayOf(value[0])" class="dot"></div>
+      </div>
+      <div class="divider-top"></div>
+      <div class="divider-bottom"></div>
+      <div
+        class="dot-container"
+        [ngClass]="{
+          'dot-container-0': value[1] === 0,
+          'dot-container-1': value[1] === 1,
+          'dot-container-2': value[1] === 2,
+          'dot-container-3': value[1] === 3,
+          'dot-container-4': value[1] === 4,
+          'dot-container-5': value[1] === 5,
+          'dot-container-6': value[1] === 6
+        }"
+      >
+        <div *ngFor="let dot of arrayOf(value[1])" class="dot"></div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
