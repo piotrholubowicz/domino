@@ -18,17 +18,15 @@
 
 .piece {
   position: relative;
-  background: blue;
-  color: white;
+  border: 2px solid #222222;
+  border-radius: 5px;
+  background: #eee;
+  color: #222222;
 }
 
 .piece.vertical {
   width: 40px;
   height: 80px;
-  border: 2px solid #222222;
-  border-radius: 5px;
-  background: #eee;
-  color: #222222;
 }
 
 .piece.horizontal {
@@ -40,7 +38,7 @@
   position: absolute;
   width: var(--dot-size);
   height: var(--dot-size);
-  background-color: black;
+  background-color: #222222;
   border-radius: 50%;
 }
 
@@ -52,7 +50,7 @@
   margin: auto;
 }
 
-.piece.vertical .divider-top {
+.piece.vertical .divider-first {
   float: left;
   width: 30px;
   height: 2px;
@@ -60,7 +58,7 @@
   border-bottom: 1px solid #222222;
 }
 
-.piece.vertical .divider-bottom {
+.piece.vertical .divider-second {
   float: left;
   width: 30px;
   height: 2px;
