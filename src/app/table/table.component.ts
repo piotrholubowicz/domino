@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, EMPTY, of, Subscription } from 'rxjs';
-import { catchError, tap, switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
 import { Game } from '../game';
