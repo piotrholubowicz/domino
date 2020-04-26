@@ -1,5 +1,10 @@
-<div *ngIf="game">
-  <p class="text-center">
-    <span *ngFor="let piece of game.table">[{{ piece }}] </span>
-  </p>
+<div *ngIf="game" class="board">
+  <app-piece
+    *ngFor="let piece of game.table; let i = index"
+    class="piece"
+    [style.left.px]="width / 2 + piecePositions[i].coords.x"
+    [style.top.px]="height / 2 - piecePositions[i].coords.y"
+    [orientation]="piecePositions[i].orientation"
+    [value]="piecePositions[i].piece"
+  ></app-piece>
 </div>

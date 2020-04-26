@@ -193,13 +193,13 @@ export class PositionCalculator {
     let pos: PiecePosition;
     if (this.double(piece)) {
       pos = {
-        piece: this.reverse(piece),
+        piece,
         orientation: VERTICAL,
         coords: { x: this.leftEnd.x, y: this.leftEnd.y + this.p },
       };
     } else {
       pos = {
-        piece,
+        piece: this.reverse(piece),
         orientation: HORIZONTAL,
         coords: this.leftEnd,
       };
@@ -222,7 +222,7 @@ export class PositionCalculator {
       };
     } else {
       pos = {
-        piece,
+        piece: this.reverse(piece),
         orientation: HORIZONTAL,
         coords: { x: this.rightEnd.x - 4 * this.p, y: this.rightEnd.y },
       };
@@ -306,7 +306,7 @@ export class PositionCalculator {
     if (this.double(lastPiece.piece)) {
       this.rightEnd = this.getEndFromPosition(lastPiece, Direction.UP);
     } else {
-      this.rightEnd = { x: this.leftEnd.x, y: this.leftEnd.y - 2 * this.p };
+      this.rightEnd = { x: this.rightEnd.x, y: this.rightEnd.y - 2 * this.p };
     }
     this.rightDirection = Direction.UP;
   }
@@ -318,7 +318,7 @@ export class PositionCalculator {
     const turningLeft = this.rightEnd.x > 0;
     if (turningLeft) {
       this.rightEnd = {
-        x: this.rightEnd.x - 2 * this.p,
+        x: this.rightEnd.x + 2 * this.p,
         y: this.rightEnd.y + 2 * this.p,
       };
       this.rightDirection = Direction.LEFT;
