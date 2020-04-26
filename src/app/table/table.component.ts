@@ -112,7 +112,7 @@ export class TableComponent implements OnInit, OnDestroy {
     throw new Error(`Unrecognized position ${pos}`);
   }
 
-  status(): string {
+  moveStatus(): string {
     if (!this.game.lastMove) {
       return '';
     }
@@ -120,6 +120,38 @@ export class TableComponent implements OnInit, OnDestroy {
       return `${this.game.lastMove.player} passed`;
     }
     return `${this.game.lastMove.player} played [${this.game.lastMove.move.piece}]`;
+  }
+
+  roundStatus(): string {
+    const score = this.game.scoreLog
+      ? this.game.scoreLog[this.game.scoreLog.length - 1]
+      : [];
+    switch (this.game.state) {
+      case ROUND_FINISHED:
+        const players = [
+          this.currentPlayer(),
+          this.game.players[
+            (this.game.players.indexOf(this.currentPlayer()) + 2) % 4
+          ],
+        ];
+        return `Game over! ${players[0]} and ${players[1]} win ${
+          score[0] + score[1]
+        } points.`;
+      case ROUND_BLOCKED:
+        if (score[0] > 0) {
+          return `Game is blocked! ${this.game.players[0]} and ${this.game.players[2]} win ${score[0]} points.`;
+        }
+        if (score[1] > 0) {
+          return `Game is blocked! ${this.game.players[1]} and ${this.game.players[3]} win ${score[1]} points.`;
+        }
+        return `Game is blocked and ended with a draw!`;
+      default:
+        return '';
+    }
+  }
+
+  status(): string {
+    return `${this.moveStatus()} ${this.roundStatus()}`;
   }
 
   score(): number[] {
