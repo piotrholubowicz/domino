@@ -29,18 +29,22 @@ export class BoardComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.piecePositions = this.calculatePositions();
-    console.log(
-      `x=${this.piecePositions[0].coords.x}, y=${this.piecePositions[0].coords.y}`
-    );
-    console.log(`width=${this.width}, height=${this.height}`);
+    // console.log(
+    //   `x=${this.piecePositions[0].coords.x}, y=${this.piecePositions[0].coords.y}`
+    // );
+    // console.log(`width=${this.width}, height=${this.height}`);
   }
 
   private calculatePositions() {
+    if (!this.game) {
+      return [];
+    }
     console.log(
       `Calculating positions, already ${this.game.table.length} pieces`
     );
     const calculator = new PositionCalculator(700, 40);
     if (this.game.firstPiece) {
+      console.log(this.game.firstPiece);
       calculator.add(this.game.firstPiece);
       const firstPosIdx = this.game.table.findIndex(
         (piece) =>
