@@ -43,6 +43,9 @@ export class TableComponent implements OnInit, OnDestroy {
         switchMap((_) => {
           return this.service.getGamePolling().pipe(
             tap((game) => {
+              if (!this.myTurn()) {
+                this.selectedPiece = undefined;
+              }
               if (game.state === 'NO_GAME') {
                 this.router.navigate(['team']);
               }
@@ -86,6 +89,10 @@ export class TableComponent implements OnInit, OnDestroy {
 
   currentPlayer(): string {
     return this.game.currentPlayer;
+  }
+
+  myTurn(): boolean {
+    return this.player() === this.currentPlayer();
   }
 
   playerIdx(pos: string): number {
