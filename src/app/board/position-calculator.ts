@@ -275,15 +275,20 @@ export class PositionCalculator {
   }
 
   private turnFromDown(firstPiece: PiecePosition) {
-    if (this.double(firstPiece.piece)) {
-      throw new Error(`Can't turn from down on double`);
-    }
     const turningLeft = this.leftEnd.x > 0;
     if (turningLeft) {
-      this.leftEnd = { x: this.leftEnd.x + 2 * this.p, y: this.leftEnd.y };
+      if (this.double(firstPiece.piece)) {
+        this.leftEnd = this.getEndFromPosition(firstPiece, Direction.LEFT);
+      } else {
+        this.leftEnd = { x: this.leftEnd.x + 2 * this.p, y: this.leftEnd.y };
+      }
       this.leftDirection = Direction.LEFT;
     } else {
-      // the same left end
+      if (this.double(firstPiece.piece)) {
+        this.leftEnd = this.getEndFromPosition(firstPiece, Direction.RIGHT);
+      } else {
+        // the same left end
+      }
       this.leftDirection = Direction.RIGHT;
     }
   }
@@ -312,21 +317,26 @@ export class PositionCalculator {
   }
 
   private turnFromUp(lastPiece: PiecePosition) {
-    if (this.double(lastPiece.piece)) {
-      throw new Error(`Can't turn from up on double`);
-    }
     const turningLeft = this.rightEnd.x > 0;
     if (turningLeft) {
-      this.rightEnd = {
-        x: this.rightEnd.x + 2 * this.p,
-        y: this.rightEnd.y + 2 * this.p,
-      };
+      if (this.double(lastPiece.piece)) {
+        this.rightEnd = this.getEndFromPosition(lastPiece, Direction.LEFT);
+      } else {
+        this.rightEnd = {
+          x: this.rightEnd.x + 2 * this.p,
+          y: this.rightEnd.y + 2 * this.p,
+        };
+      }
       this.rightDirection = Direction.LEFT;
     } else {
-      this.rightEnd = {
-        x: this.rightEnd.x,
-        y: this.rightEnd.y + 2 * this.p,
-      };
+      if (this.double(lastPiece.piece)) {
+        this.rightEnd = this.getEndFromPosition(lastPiece, Direction.RIGHT);
+      } else {
+        this.rightEnd = {
+          x: this.rightEnd.x,
+          y: this.rightEnd.y + 2 * this.p,
+        };
+      }
       this.rightDirection = Direction.RIGHT;
     }
   }

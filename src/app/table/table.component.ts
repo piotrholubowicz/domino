@@ -7,6 +7,9 @@ import { catchError, tap, switchMap } from 'rxjs/operators';
 import { GameService } from '../game.service';
 import { Game } from '../game';
 
+const ROUND_FINISHED = 'ROUND_FINISHED';
+const ROUND_BLOCKED = 'ROUND_BLOCKED';
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -21,6 +24,7 @@ export class TableComponent implements OnInit, OnDestroy {
     RIGHT: 4,
     LEFT_AND_RIGHT: 5,
     PASS: 6,
+    NEXT_ROUND: 7,
   });
 
   game: Game;
@@ -66,6 +70,10 @@ export class TableComponent implements OnInit, OnDestroy {
     this.service.logout().subscribe((_) => {
       this.router.navigate(['players']);
     });
+  }
+
+  nextRound() {
+    this.service.nextRound(this.game.id).subscribe();
   }
 
   isSignedIn(): boolean {
@@ -168,6 +176,9 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   whereCanSelectedBePlayed(): number {
+    if ([ROUND_BLOCKED, ROUND_FINISHED].includes(this.game.state)) {
+      return this.PiecePlayOption.NEXT_ROUND;
+    }
     if (this.player() !== this.currentPlayer()) {
       return undefined;
     }
@@ -210,17 +221,25 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   play(type: string) {
-    const move =
-      type === 'pass'
-        ? { move: 'pass' }
-        : {
-            move: {
-              piece: this.selectedPiece,
-              placement: type === 'start' ? 'left' : type,
-            },
-          };
-    this.service
-      .makeMove(this.game.id, move)
-      .subscribe((_) => (this.selectedPiece = undefined));
+    if (type === 'next-round') {
+      this.service
+        .nextRound(this.game.id)
+        .subscribe((_) => (this.selectedPiece = undefined));
+    } else {
+      let move: any;
+      if (type === 'pass') {
+        move = { move: 'pass' };
+      } else {
+        move = {
+          move: {
+            piece: this.selectedPiece,
+            placement: type === 'start' ? 'left' : type,
+          },
+        };
+      }
+      this.service
+        .makeMove(this.game.id, move)
+        .subscribe((_) => (this.selectedPiece = undefined));
+    }
   }
 }

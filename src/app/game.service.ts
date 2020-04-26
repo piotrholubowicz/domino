@@ -121,6 +121,16 @@ export class GameService {
       );
   }
 
+  /** POST: next round */
+  nextRound(id: string): Observable<void> {
+    const url = `${this.gamesUrl}/game/${id}`;
+    const headers = this.addAuth(this.headers);
+    return this.http.post<void>(url, { nextround: true }, { headers }).pipe(
+      tap((_) => console.log(`next round`)),
+      catchError(this.handleError<void>('nextRound'))
+    );
+  }
+
   pickPlayer(player: string): Observable<void> {
     const url = `${this.gamesUrl}/players/${player}`;
     const password = `${Math.floor(Math.random() * 1000)}`;

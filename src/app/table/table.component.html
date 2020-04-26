@@ -139,6 +139,14 @@
         [ngSwitch]="whereCanSelectedBePlayed()"
       >
         <button
+          *ngSwitchCase="PiecePlayOption.NEXT_ROUND"
+          type="button"
+          class="btn btn-success"
+          (click)="play('next-round')"
+        >
+          Next round
+        </button>
+        <button
           *ngSwitchCase="PiecePlayOption.START"
           type="button"
           class="btn btn-success"
