@@ -39,9 +39,6 @@ export class TableComponent implements OnInit, OnDestroy {
   gameSubscription: Subscription;
   selectedPiece: number[];
 
-  boardWidth: number;
-  boardHeight: number;
-
   constructor(
     private service: GameService,
     private route: ActivatedRoute,
