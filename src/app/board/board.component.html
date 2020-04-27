@@ -1,4 +1,4 @@
-<div *ngIf="game" class="board">
+<div *ngIf="game" class="board" [style.height.px]="height">
   <app-piece
     *ngFor="let piece of game.table; let i = index"
     class="piece"

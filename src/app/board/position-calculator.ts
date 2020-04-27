@@ -450,4 +450,19 @@ export class PositionCalculator {
   getPositions(): PiecePosition[] {
     return this.positions;
   }
+
+  getHeight(): number {
+    if (this.positions.length === 0) {
+      return 0;
+    }
+    const right = this.positions[this.positions.length - 1];
+    const top =
+      right.orientation === VERTICAL ? right.coords.y : right.coords.y + this.p;
+    const left = this.positions[0];
+    const bottom =
+      left.orientation === VERTICAL
+        ? left.coords.y - 4 * this.p
+        : left.coords.y - 3 * this.p;
+    return top - bottom;
+  }
 }

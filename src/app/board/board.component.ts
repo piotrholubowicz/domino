@@ -17,22 +17,19 @@ import { Game } from './../game';
 export class BoardComponent implements OnInit, OnChanges {
   @Input() game: Game;
   @Input() width: number;
-  @Input() height: number;
 
   piecePositions: PiecePosition[] = [];
+  height: number;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.piecePositions = this.calculatePositions();
+    this.calculatePositions();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.piecePositions = this.calculatePositions();
-    // console.log(
-    //   `x=${this.piecePositions[0].coords.x}, y=${this.piecePositions[0].coords.y}`
-    // );
-    // console.log(`width=${this.width}, height=${this.height}`);
+    this.calculatePositions();
+    console.log(`width=${this.width}, height=${this.height}`);
   }
 
   private calculatePositions() {
@@ -65,6 +62,7 @@ export class BoardComponent implements OnInit, OnChanges {
         calculator.add(this.game.table[i], 'left');
       }
     }
-    return calculator.getPositions();
+    this.piecePositions = calculator.getPositions();
+    this.height = Math.max(calculator.getHeight(), 400);
   }
 }
