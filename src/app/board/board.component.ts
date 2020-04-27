@@ -6,7 +6,7 @@ import {
   Input,
   SimpleChanges,
   OnChanges,
-  AfterViewChecked,
+  AfterViewInit,
   ViewChild,
   ElementRef,
 } from '@angular/core';
@@ -17,7 +17,7 @@ import { Game } from './../game';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
 })
-export class BoardComponent implements OnInit, OnChanges, AfterViewChecked {
+export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() game: Game;
 
   piecePositions: PiecePosition[] = [];
@@ -38,7 +38,7 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewChecked {
     console.log(`width=${this.width}, height=${this.height}`);
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.width = this.boardView.nativeElement.offsetWidth;
     });
