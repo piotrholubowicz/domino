@@ -175,6 +175,8 @@ export class TableComponent implements OnInit, OnDestroy {
   hand(pos: string): number[][] {
     const pieces = this.game.hands[this.game.players[this.playerIdx(pos)]];
     if (Array.isArray(pieces)) {
+      console.log(`Pos is ${pos}`);
+      console.log(pieces);
       return pieces;
     }
     // pieces are face down
@@ -183,6 +185,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   isDisabled(piece: number[]): boolean {
     return (
+      piece &&
       this.currentPlayer() === this.player() &&
       this.whereCanBePlayed(piece) === this.PiecePlayOption.CANT_PLAY
     );
@@ -190,6 +193,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   isPlayable(piece: number[]): boolean {
     return (
+      piece &&
       this.currentPlayer() === this.player() &&
       this.whereCanBePlayed(piece) !== this.PiecePlayOption.CANT_PLAY
     );
@@ -232,12 +236,9 @@ export class TableComponent implements OnInit, OnDestroy {
     if (this.selectedPiece) {
       return this.whereCanBePlayed(this.selectedPiece);
     }
-    if (
-      // this function should only be called for a signed-in player's hand
-      !(this.game.hands[this.player()] as number[][]).some((piece) =>
-        this.isPlayable(piece)
-      )
-    ) {
+    // this function should only be called for a signed-in player's hand
+    const hand: number[][] = this.game.hands[this.player()] as number[][];
+    if (!hand.some((piece) => this.isPlayable(piece))) {
       return this.PiecePlayOption.PASS;
     }
     // there are playable pieces but none is selected
