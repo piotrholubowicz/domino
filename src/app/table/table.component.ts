@@ -175,8 +175,6 @@ export class TableComponent implements OnInit, OnDestroy {
   hand(pos: string): number[][] {
     const pieces = this.game.hands[this.game.players[this.playerIdx(pos)]];
     if (Array.isArray(pieces)) {
-      console.log(`Pos is ${pos}`);
-      console.log(pieces);
       return pieces;
     }
     // pieces are face down
