@@ -23,7 +23,7 @@ const ROUND_BLOCKED = 'ROUND_BLOCKED';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class TableComponent implements OnInit, OnDestroy {
   // where you can put a piece
   PiecePlayOption = Object.freeze({
     CANT_PLAY: 1,
@@ -39,8 +39,6 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewChecked {
   gameSubscription: Subscription;
   selectedPiece: number[];
 
-  @ViewChild('board', { read: ElementRef })
-  boardView: ElementRef;
   boardWidth: number;
   boardHeight: number;
 
@@ -74,11 +72,6 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy(): void {
     this.gameSubscription.unsubscribe();
-  }
-
-  ngAfterViewChecked() {
-    // this.boardWidth = this.boardView.nativeElement.offsetWidth;
-    // console.log(`got width = ${this.boardWidth}`);
   }
 
   onEndGame(event: any) {

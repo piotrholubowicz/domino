@@ -6,6 +6,9 @@ import {
   Input,
   SimpleChanges,
   OnChanges,
+  AfterViewChecked,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { Game } from './../game';
 
@@ -14,12 +17,15 @@ import { Game } from './../game';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
 })
-export class BoardComponent implements OnInit, OnChanges {
+export class BoardComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() game: Game;
-  @Input() width: number;
 
   piecePositions: PiecePosition[] = [];
+  width: number;
   height: number;
+
+  @ViewChild('board', { read: ElementRef })
+  boardView: ElementRef;
 
   constructor() {}
 
@@ -30,6 +36,12 @@ export class BoardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.calculatePositions();
     console.log(`width=${this.width}, height=${this.height}`);
+  }
+
+  ngAfterViewChecked() {
+    setTimeout(() => {
+      this.width = this.boardView.nativeElement.offsetWidth;
+    });
   }
 
   private calculatePositions() {
