@@ -16,6 +16,7 @@ import {
 import { TableComponent } from './table/table.component';
 import { PieceComponent } from './piece/piece.component';
 import { BoardComponent } from './board/board.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -30,11 +31,12 @@ import { BoardComponent } from './board/board.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgbModule,
     HttpClientModule,
     CookieModule.forRoot(),
   ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }, GameService],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent, TableComponent],
   entryComponents: [EndGameConfirmComponent],
 })
 export class AppModule {}

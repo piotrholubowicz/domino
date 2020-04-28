@@ -16,23 +16,59 @@
       class="gear-container"
       *ngIf="game.players[playerIdx(side)] === currentPlayer()"
     >
-      <!-- a placeholder for centering the text -->
+      <!-- a placeholder for centering the text   -->
     </div>
   </div>
 </ng-template>
 
+<ng-template #scorePopContent
+  ><table class="table table-sm">
+    <ng-template #noScores
+      ><tr>
+        <td>-</td>
+        <td>-</td>
+      </tr></ng-template
+    >
+    <thead>
+      <tr>
+        <th scope="col">{{ game.players[0] }} & {{ game.players[2] }}</th>
+        <th scope="col">{{ game.players[1] }} & {{ game.players[3] }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="game.scoreLog.length > 0; else noScores">
+        <tr *ngFor="let score of game.scoreLog">
+          <td>score[0]</td>
+          <td>score[1]</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table></ng-template
+>
+<ng-template #scorePopTitle>Game Score</ng-template>
+
 <div *ngIf="game">
-  <div class="row">
-    <div class="col-2">
-      <p>Welcome, {{ player() }}!</p>
+  <div class="row top-row">
+    <div class="col-2 text-center">
+      <span class="align-middle">Welcome, {{ player() }}!</span>
     </div>
     <div class="col-8 text-center">
-      <p>
-        <em>{{ status() }}</em>
-      </p>
+      <span class="align-middle"
+        ><em>{{ status() }}</em></span
+      >
     </div>
-    <div class="col-2 text-right">
-      <p *ngIf="score() as s">score: {{ s[0] }} | {{ s[1] }}</p>
+    <div class="col-2 text-center">
+      <button
+        *ngIf="score() as s"
+        type="button"
+        class="btn btn-outline-secondary"
+        [ngbPopover]="scorePopContent"
+        [popoverTitle]="scorePopTitle"
+        [autoClose]="'outside'"
+        placement="bottom"
+      >
+        score: {{ s[0] }} | {{ s[1] }}
+      </button>
     </div>
   </div>
 
