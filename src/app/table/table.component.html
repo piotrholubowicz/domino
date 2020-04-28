@@ -1,16 +1,23 @@
 <ng-template #playerName let-side="side">
   <div class="text-center">
-    <ng-container *ngIf="game.players[playerIdx(side)] === currentPlayer()">
+    <div
+      class="gear-container"
+      *ngIf="game.players[playerIdx(side)] === currentPlayer()"
+    >
       <div class="gear gear1"></div>
-    </ng-container>
+      <div class="gear gear2"></div>
+    </div>
     <div class="player-name">
       <span>
         {{ game.players[playerIdx(side)] }}
       </span>
     </div>
-    <ng-container *ngIf="game.players[playerIdx(side)] === currentPlayer()"
-      ><div class="gear gear2"></div
-    ></ng-container>
+    <div
+      class="gear-container"
+      *ngIf="game.players[playerIdx(side)] === currentPlayer()"
+    >
+      <!-- a placeholder for centering the text -->
+    </div>
   </div>
 </ng-template>
 
