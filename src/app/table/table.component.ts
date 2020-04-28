@@ -114,7 +114,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   moveStatus(): string {
     if (!this.game.lastMove) {
-      return '';
+      return `${this.game.currentPlayer} starts!`;
     }
     if (this.game.lastMove.move === 'pass') {
       return `${this.game.lastMove.player} passed.`;
