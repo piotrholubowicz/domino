@@ -1,3 +1,19 @@
+<ng-template #playerName let-side="side">
+  <div class="text-center">
+    <ng-container *ngIf="game.players[playerIdx(side)] === currentPlayer()">
+      <div class="gear gear1"></div>
+    </ng-container>
+    <div class="player-name">
+      <span>
+        {{ game.players[playerIdx(side)] }}
+      </span>
+    </div>
+    <ng-container *ngIf="game.players[playerIdx(side)] === currentPlayer()"
+      ><div class="gear gear2"></div
+    ></ng-container>
+  </div>
+</ng-template>
+
 <div *ngIf="game">
   <div class="row">
     <div class="col-2">
@@ -19,13 +35,9 @@
     <div class="col-8">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">
-            <span
-              *ngIf="game.players[playerIdx('north')] as p"
-              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
-              >{{ p }}</span
-            >
-          </p>
+          <ng-container
+            *ngTemplateOutlet="playerName; context: { side: 'north' }"
+          ></ng-container>
         </div>
       </div>
       <div class="row">
@@ -44,13 +56,9 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">
-            <span
-              *ngIf="game.players[playerIdx('west')] as p"
-              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
-              >{{ p }}</span
-            >
-          </p>
+          <ng-container
+            *ngTemplateOutlet="playerName; context: { side: 'west' }"
+          ></ng-container>
         </div>
       </div>
       <div class="row">
@@ -69,13 +77,9 @@
     <div class="col-2">
       <div class="row">
         <div class="col-12">
-          <p class="text-center">
-            <span
-              *ngIf="game.players[playerIdx('east')] as p"
-              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
-              >{{ p }}</span
-            >
-          </p>
+          <ng-container
+            *ngTemplateOutlet="playerName; context: { side: 'east' }"
+          ></ng-container>
         </div>
       </div>
       <div class="row">
@@ -108,13 +112,9 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <p class="text-center">
-            <span
-              *ngIf="game.players[playerIdx('south')] as p"
-              [ngClass]="{ 'badge badge-success': p === currentPlayer() }"
-              >{{ p }}</span
-            >
-          </p>
+          <ng-container
+            *ngTemplateOutlet="playerName; context: { side: 'south' }"
+          ></ng-container>
         </div>
       </div>
     </div>

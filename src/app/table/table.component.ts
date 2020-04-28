@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  AfterViewChecked,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -21,7 +13,7 @@ const ROUND_BLOCKED = 'ROUND_BLOCKED';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  styleUrls: ['./table.component.scss', './gears.scss'],
 })
 export class TableComponent implements OnInit, OnDestroy {
   // where you can put a piece
