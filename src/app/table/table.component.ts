@@ -64,7 +64,7 @@ export class TableComponent implements OnInit, OnDestroy {
         this.game = game;
         if (this.isMyTurn() && !this.wasMyTurn) {
           this.yourTurnOverlayShown = true;
-          timer(1500).subscribe((_) => (this.yourTurnOverlayShown = false));
+          timer(1000).subscribe((_) => (this.yourTurnOverlayShown = false));
         } else if (this.wasMyTurn && !this.isMyTurn()) {
           this.selectedPiece = undefined;
         }
