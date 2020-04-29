@@ -90,7 +90,11 @@
       <div class="row">
         <div class="col-12 piece-row">
           <div *ngFor="let piece of hand('north')" class="piece">
-            <app-piece [value]="piece" [orientation]="'vertical'"></app-piece>
+            <app-piece
+              [value]="piece"
+              [orientation]="'vertical'"
+              [style]="style"
+            ></app-piece>
           </div>
         </div>
       </div>
@@ -111,7 +115,11 @@
       <div class="row">
         <div class="col-12 piece-row">
           <div *ngFor="let piece of hand('west')" class="piece">
-            <app-piece [value]="piece" [orientation]="'horizontal'"></app-piece>
+            <app-piece
+              [value]="piece"
+              [orientation]="'horizontal'"
+              [style]="style"
+            ></app-piece>
           </div>
         </div>
       </div>
@@ -123,6 +131,7 @@
         [showHint]="
           whereCanSelectedBePlayed() === PiecePlayOption.LEFT_AND_RIGHT
         "
+        [style]="style"
       ></app-board>
     </div>
     <!-- Right player -->
@@ -137,7 +146,11 @@
       <div class="row">
         <div class="col-12 piece-row">
           <div *ngFor="let piece of hand('east')" class="piece">
-            <app-piece [value]="piece" [orientation]="'horizontal'"></app-piece>
+            <app-piece
+              [value]="piece"
+              [orientation]="'horizontal'"
+              [style]="style"
+            ></app-piece>
           </div>
         </div>
       </div>
@@ -157,6 +170,7 @@
               [disabled]="isDisabled(piece)"
               [playable]="isPlayable(piece)"
               [selected]="isSelected(piece)"
+              [style]="style"
               (selectionChanged)="onPieceSelectionChanged($event)"
             ></app-piece>
           </div>
@@ -250,6 +264,26 @@
           Play
         </button>
       </ng-container>
+    </div>
+    <div class="col-4 text-right">
+      <div ngbDropdown placement="top-right" class="d-inline-block">
+        <button
+          class="btn btn-outline-primary"
+          id="stylesDropdown"
+          ngbDropdownToggle
+        >
+          Style: {{ style }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="stylesDropdown">
+          <button
+            ngbDropdownItem
+            *ngFor="let style of getStyles()"
+            (click)="setStyle(style)"
+          >
+            {{ style }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

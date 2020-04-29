@@ -39,6 +39,7 @@ export class TableComponent implements OnInit, OnDestroy {
   selectedPiece: number[];
   wasMyTurn = false;
   yourTurnOverlayShown = false;
+  style = 'classic';
 
   constructor(
     private service: GameService,
@@ -292,5 +293,13 @@ export class TableComponent implements OnInit, OnDestroy {
         .makeMove(this.game.id, move)
         .subscribe((_) => (this.selectedPiece = undefined));
     }
+  }
+
+  getStyles(): string[] {
+    return ['classic', 'oreo', 'azul', 'rainbow'];
+  }
+
+  setStyle(newStyle: string) {
+    this.style = newStyle;
   }
 }
