@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
+
+import { trigger, style, animate, transition } from '@angular/animations';
 
 import { GameService } from '../game.service';
 import { Game } from '../game';
@@ -14,6 +16,11 @@ const ROUND_BLOCKED = 'ROUND_BLOCKED';
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss', './gears.scss'],
+  animations: [
+    trigger('yourTurnOverlayTrigger', [
+      transition(':leave', [animate('1000ms', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class TableComponent implements OnInit, OnDestroy {
   // where you can put a piece
@@ -30,6 +37,8 @@ export class TableComponent implements OnInit, OnDestroy {
   game: Game;
   gameSubscription: Subscription;
   selectedPiece: number[];
+  wasMyTurn = false;
+  yourTurnOverlayShown = false;
 
   constructor(
     private service: GameService,
@@ -53,9 +62,13 @@ export class TableComponent implements OnInit, OnDestroy {
       .subscribe((game) => {
         console.log('new game!');
         this.game = game;
-        if (!this.myTurn()) {
+        if (this.isMyTurn() && !this.wasMyTurn) {
+          this.yourTurnOverlayShown = true;
+          timer(1500).subscribe((_) => (this.yourTurnOverlayShown = false));
+        } else if (this.wasMyTurn && !this.isMyTurn()) {
           this.selectedPiece = undefined;
         }
+        this.wasMyTurn = this.isMyTurn();
       });
   }
 
@@ -91,7 +104,7 @@ export class TableComponent implements OnInit, OnDestroy {
     return this.game.currentPlayer;
   }
 
-  myTurn(): boolean {
+  isMyTurn(): boolean {
     return this.player() === this.currentPlayer();
   }
 

@@ -47,6 +47,10 @@
 >
 <ng-template #scorePopTitle>Game Score</ng-template>
 
+<div @yourTurnOverlayTrigger *ngIf="yourTurnOverlayShown" id="your-turn-banner">
+  <h1 class="display-4 text-center">Your turn!</h1>
+</div>
+
 <div *ngIf="game">
   <div class="row top-row">
     <div class="col-2 text-center">
