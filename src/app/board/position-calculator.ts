@@ -465,4 +465,26 @@ export class PositionCalculator {
         : left.coords.y - 3 * this.p;
     return top - bottom;
   }
+
+  getLeftHintPosition(): Coords {
+    switch (this.leftDirection) {
+      case Direction.LEFT:
+        return { x: this.leftEnd.x - 2 * this.p, y: this.leftEnd.y };
+      case Direction.RIGHT:
+        return this.leftEnd;
+      case Direction.DOWN:
+        return this.leftEnd;
+    }
+  }
+
+  getRightHintPosition(): Coords {
+    switch (this.rightDirection) {
+      case Direction.LEFT:
+        return { x: this.rightEnd.x - 2 * this.p, y: this.rightEnd.y };
+      case Direction.RIGHT:
+        return this.rightEnd;
+      case Direction.UP:
+        return { x: this.rightEnd.x, y: this.rightEnd.y + 2 * this.p };
+    }
+  }
 }

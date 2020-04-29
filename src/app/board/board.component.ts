@@ -1,4 +1,4 @@
-import { PiecePosition } from './piece-position';
+import { PiecePosition, Coords } from './piece-position';
 import { PositionCalculator } from './position-calculator';
 import {
   Component,
@@ -19,10 +19,13 @@ import { Game } from './../game';
 })
 export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() game: Game;
+  @Input() showHint: false;
 
   piecePositions: PiecePosition[] = [];
   width: number;
   height: number;
+  leftHintPosition: Coords;
+  rightHintPosition: Coords;
 
   @ViewChild('board', { read: ElementRef })
   boardView: ElementRef;
@@ -73,6 +76,8 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
       for (let i = firstPosIdx - 1; i >= 0; i--) {
         calculator.add(this.game.table[i], 'left');
       }
+      this.leftHintPosition = calculator.getLeftHintPosition();
+      this.rightHintPosition = calculator.getRightHintPosition();
     }
     this.piecePositions = calculator.getPositions();
     this.height = Math.max(calculator.getHeight(), 400);

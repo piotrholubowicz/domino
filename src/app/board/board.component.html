@@ -8,5 +8,21 @@
       [orientation]="piecePositions[i].orientation"
       [value]="piecePositions[i].piece"
     ></app-piece>
+    <div
+      *ngIf="leftHintPosition && showHint"
+      class="hint"
+      [style.left.px]="width / 2 + leftHintPosition.x"
+      [style.top.px]="height / 2 - leftHintPosition.y"
+    >
+      left
+    </div>
+    <div
+      *ngIf="rightHintPosition && showHint"
+      class="hint"
+      [style.left.px]="width / 2 + rightHintPosition.x"
+      [style.top.px]="height / 2 - rightHintPosition.y"
+    >
+      right
+    </div>
   </div>
 </div>

@@ -118,7 +118,12 @@
     </div>
     <!-- Board -->
     <div class="col-8" id="board">
-      <app-board [game]="game"></app-board>
+      <app-board
+        [game]="game"
+        [showHint]="
+          whereCanSelectedBePlayed() === PiecePlayOption.LEFT_AND_RIGHT
+        "
+      ></app-board>
     </div>
     <!-- Right player -->
     <div class="col-2">
