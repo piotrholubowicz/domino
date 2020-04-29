@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-piece',
   templateUrl: './piece.component.html',
-  styleUrls: ['./piece.component.scss'],
+  styleUrls: ['./styles.scss', './piece.component.scss'],
 })
 export class PieceComponent implements OnInit {
   // 2 numbers for face-up or undefined for face-down
@@ -18,6 +18,8 @@ export class PieceComponent implements OnInit {
   @Input() selected = false;
   // the player clicked on a playable piece
   @Input() dotSize = 'large';
+  // The piece coloring style
+  @Input() style = 'classic';
   // the player clicked on a playable piece
   @Output() selectionChanged = new EventEmitter<number[]>();
 
