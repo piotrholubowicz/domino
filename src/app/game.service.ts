@@ -114,9 +114,10 @@ export class GameService {
     return this.http
       .post<void>(url, move, { headers })
       .pipe(
-        tap((_) =>
-          console.log(`made a move ${move.piece ? move.piece : move}`)
-        ),
+        tap((_) => {
+          console.log(`made a move ${move.piece ? move.piece : move}`);
+          this.storeCreds(this.player, this.password);
+        }),
         catchError(this.handleError<void>('makeMove'))
       );
   }
@@ -141,9 +142,7 @@ export class GameService {
           console.log(`picked player ${player}`);
           this.player = player;
           this.password = password;
-          const cookieOptions = { expires: this.minutesFromNow(30) };
-          this.cookieService.put(this.cookiePlayer, player, cookieOptions);
-          this.cookieService.put(this.cookiePassword, password, cookieOptions);
+          this.storeCreds(player, password);
         }),
         catchError(
           (error: any): Observable<void> => {
@@ -152,6 +151,12 @@ export class GameService {
           }
         )
       );
+  }
+
+  private storeCreds(player: string, password: string) {
+    const cookieOptions = { expires: this.minutesFromNow(30) };
+    this.cookieService.put(this.cookiePlayer, player, cookieOptions);
+    this.cookieService.put(this.cookiePassword, password, cookieOptions);
   }
 
   /** DELETE: reset the player */
