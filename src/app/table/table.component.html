@@ -38,8 +38,8 @@
     <tbody>
       <ng-container *ngIf="game.scoreLog.length > 0; else noScores">
         <tr *ngFor="let score of game.scoreLog">
-          <td>score[0]</td>
-          <td>score[1]</td>
+          <td>{{ score[0] }}</td>
+          <td>{{ score[1] }}</td>
         </tr>
       </ng-container>
     </tbody>
