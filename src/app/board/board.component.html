@@ -7,6 +7,7 @@
       [style.top.px]="height / 2 - piecePositions[i].coords.y"
       [orientation]="piecePositions[i].orientation"
       [value]="piecePositions[i].piece"
+      [style]="style"
     ></app-piece>
     <div
       *ngIf="leftHintPosition && showHint"

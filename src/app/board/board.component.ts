@@ -20,6 +20,7 @@ import { Game } from './../game';
 export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() game: Game;
   @Input() showHint: false;
+  @Input() style = 'classic';
 
   piecePositions: PiecePosition[] = [];
   width: number;
