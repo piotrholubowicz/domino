@@ -299,8 +299,8 @@ export class PositionCalculator {
       this.rightEnd = this.getEndFromPosition(lastPiece, Direction.UP);
     } else {
       this.rightEnd = {
-        x: this.leftEnd.x - 2 * this.p,
-        y: this.leftEnd.y - 2 * this.p,
+        x: this.rightEnd.x - 2 * this.p,
+        y: this.rightEnd.y - 2 * this.p,
       };
     }
     this.rightDirection = Direction.UP;
@@ -451,19 +451,28 @@ export class PositionCalculator {
     return this.positions;
   }
 
-  getHeight(): number {
+  getHeightUp(): number {
     if (this.positions.length === 0) {
       return 0;
     }
     const right = this.positions[this.positions.length - 1];
     const top =
       right.orientation === VERTICAL ? right.coords.y : right.coords.y + this.p;
+    console.log(`top is ${top}`);
+    return top;
+  }
+
+  getHeightDown(): number {
+    if (this.positions.length === 0) {
+      return 0;
+    }
     const left = this.positions[0];
     const bottom =
       left.orientation === VERTICAL
         ? left.coords.y - 4 * this.p
         : left.coords.y - 3 * this.p;
-    return top - bottom;
+    console.log(`bottom is ${bottom}`);
+    return -bottom;
   }
 
   getLeftHintPosition(): Coords {

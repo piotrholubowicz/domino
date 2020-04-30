@@ -24,7 +24,8 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
 
   piecePositions: PiecePosition[] = [];
   width: number;
-  height: number;
+  heightUp: number;
+  heightDown: number;
   leftHintPosition: Coords;
   rightHintPosition: Coords;
 
@@ -39,7 +40,9 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.calculatePositions();
-    console.log(`width=${this.width}, height=${this.height}`);
+    console.log(
+      `width=${this.width}, height=${this.heightUp + this.heightDown}`
+    );
   }
 
   ngAfterViewInit() {
@@ -81,6 +84,8 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
       this.rightHintPosition = calculator.getRightHintPosition();
     }
     this.piecePositions = calculator.getPositions();
-    this.height = Math.max(calculator.getHeight(), 400);
+    this.heightUp = Math.max(calculator.getHeightUp(), 200);
+    this.heightDown = Math.max(calculator.getHeightDown(), 200);
+    console.log(`height up is ${this.heightUp} down is ${this.heightDown}`);
   }
 }
