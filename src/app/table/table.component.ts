@@ -142,15 +142,11 @@ export class TableComponent implements OnInit, OnDestroy {
       : [];
     switch (this.game.state) {
       case ROUND_FINISHED:
-        const players = [
-          this.currentPlayer(),
-          this.game.players[
-            (this.game.players.indexOf(this.currentPlayer()) + 2) % 4
-          ],
-        ];
-        return `Game over! ${players[0]} and ${players[1]} win ${
-          score[0] + score[1]
-        } points.`;
+        if (score[0] > 0) {
+          return `Game over! ${this.game.players[0]} and ${this.game.players[2]} win ${score[0]} points.`;
+        } else {
+          return `Game over! ${this.game.players[1]} and ${this.game.players[3]} win ${score[1]} points.`;
+        }
       case ROUND_BLOCKED:
         if (score[0] > 0) {
           return `Game is blocked! ${this.game.players[0]} and ${this.game.players[2]} win ${score[0]} points.`;
