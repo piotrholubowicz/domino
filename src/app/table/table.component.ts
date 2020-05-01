@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subscription, timer } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { Subscription, timer, EMPTY } from 'rxjs';
+import { tap, switchMap, catchError } from 'rxjs/operators';
 
 import { trigger, style, animate, transition } from '@angular/animations';
 
@@ -56,6 +56,13 @@ export class TableComponent implements OnInit, OnDestroy {
               if (game.state === 'NO_GAME') {
                 this.router.navigate(['team']);
               }
+            }),
+            catchError((error: any) => {
+              if (error.status === 404) {
+                this.router.navigate(['team']);
+                return EMPTY;
+              }
+              throw error;
             })
           );
         })
