@@ -24,6 +24,7 @@
     "@angular/router": "~9.1.0",
     "@ng-bootstrap/ng-bootstrap": "^6.0.3",
     "@nguniversal/express-engine": "^9.1.0",
+    "@types/uuid": "^7.0.3",
     "bootstrap": "^4.4.1",
     "express-serve-static-core": "^0.1.1",
     "jquery": "^3.5.0",

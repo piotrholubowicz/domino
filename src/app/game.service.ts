@@ -14,6 +14,8 @@ import {
 
 import { Game } from './game';
 
+import { v4 as uuid } from 'uuid';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -134,7 +136,7 @@ export class GameService {
 
   pickPlayer(player: string): Observable<void> {
     const url = `${this.gamesUrl}/players/${player}`;
-    const password = `${Math.floor(Math.random() * 1000)}`;
+    const password = `${uuid()}`;
     return this.http
       .put<void>(url, { password }, { headers: this.headers })
       .pipe(
