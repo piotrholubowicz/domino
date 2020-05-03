@@ -117,7 +117,7 @@ export class GameService {
       .post<void>(url, move, { headers })
       .pipe(
         tap((_) => {
-          console.log(`made a move ${move.piece ? move.piece : move}`);
+          console.log(move);
           this.storeCreds(this.player, this.password);
         }),
         catchError(this.handleError<void>('makeMove'))
