@@ -458,7 +458,6 @@ export class PositionCalculator {
     const right = this.positions[this.positions.length - 1];
     const top =
       right.orientation === VERTICAL ? right.coords.y : right.coords.y + this.p;
-    console.log(`top is ${top}`);
     return top;
   }
 
@@ -471,7 +470,6 @@ export class PositionCalculator {
       left.orientation === VERTICAL
         ? left.coords.y - 4 * this.p
         : left.coords.y - 3 * this.p;
-    console.log(`bottom is ${bottom}`);
     return -bottom;
   }
 
