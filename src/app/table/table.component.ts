@@ -308,7 +308,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   getStyles(): string[] {
-    return ['classic', 'oreo', 'azul', 'rainbow'];
+    return ['classic', 'oreo', 'azul', 'rainbow', 'sprinkles'];
   }
 
   setStyle(newStyle: string) {
