@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription, timer, EMPTY } from 'rxjs';
@@ -41,6 +47,8 @@ export class TableComponent implements OnInit, OnDestroy {
   yourTurnOverlayShown = false;
   style = 'classic';
 
+  @ViewChild('audio1') audio1: ElementRef;
+
   constructor(
     private service: GameService,
     private route: ActivatedRoute,
@@ -73,6 +81,7 @@ export class TableComponent implements OnInit, OnDestroy {
         if (this.isMyTurn() && !this.wasMyTurn) {
           this.yourTurnOverlayShown = true;
           timer(1000).subscribe((_) => (this.yourTurnOverlayShown = false));
+          this.audio1.nativeElement.play();
         } else if (this.wasMyTurn && !this.isMyTurn()) {
           this.selectedPiece = undefined;
         }

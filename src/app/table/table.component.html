@@ -47,6 +47,10 @@
 >
 <ng-template #scorePopTitle>Game Score</ng-template>
 
+<audio #audio1>
+  <source src="assets/sounds/DRUMAY.WAV" type="audio/wav" />
+</audio>
+
 <div @yourTurnOverlayTrigger *ngIf="yourTurnOverlayShown" id="your-turn-banner">
   <h1 class="display-4 text-center">Your turn!</h1>
 </div>
