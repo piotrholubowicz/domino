@@ -18,6 +18,8 @@ import { TableComponent } from './table/table.component';
 import { PieceComponent } from './piece/piece.component';
 import { BoardComponent } from './board/board.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     HttpClientModule,
     CookieModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }, GameService],
   bootstrap: [AppComponent, TableComponent],
