@@ -2,7 +2,6 @@
   "hosting": [
     {
       "target": "domino-prod",
-      "site": "eldominoazul",
       "public": "dist/domino",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
@@ -14,7 +13,6 @@
     },
     {
       "target": "domino-backup",
-      "site": "eldominoazul2",
       "public": "dist/domino",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
