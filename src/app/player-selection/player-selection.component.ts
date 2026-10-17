@@ -10,6 +10,7 @@ import { GameService } from '../game.service';
   selector: 'app-player-selection',
   templateUrl: './player-selection.component.html',
   styleUrls: ['./player-selection.component.scss'],
+  standalone: false,
 })
 export class PlayerSelectionComponent implements OnInit {
   players: string[];

@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +25,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TeamSelectionComponent,
     PlayerSelectionComponent,
     EndGameComponent,
+    EndGameConfirmComponent,
     TableComponent,
     PieceComponent,
     BoardComponent,
@@ -35,10 +36,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    CookieModule.forRoot(),
   ],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/' }, GameService],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' },
+    CookieService,
+    GameService,
+  ],
   bootstrap: [AppComponent, TableComponent],
-  entryComponents: [EndGameConfirmComponent],
 })
 export class AppModule {}

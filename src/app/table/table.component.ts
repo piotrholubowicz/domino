@@ -22,6 +22,7 @@ const ROUND_BLOCKED = 'ROUND_BLOCKED';
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss', './gears.scss'],
+  standalone: false,
   animations: [
     trigger('yourTurnOverlayTrigger', [
       transition(':leave', [animate('1000ms', style({ opacity: 0 }))]),

@@ -11,6 +11,7 @@ import { Game } from '../game';
   selector: 'app-team-selection',
   templateUrl: './team-selection.component.html',
   styleUrls: ['./team-selection.component.scss'],
+  standalone: false,
 })
 export class TeamSelectionComponent implements OnInit, OnDestroy {
   status$: Observable<string>;

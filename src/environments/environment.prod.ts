@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  gamesUrl: 'https://domino-server-d5tb.onrender.com'
 };

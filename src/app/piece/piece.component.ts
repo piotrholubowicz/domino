@@ -4,6 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-piece',
   templateUrl: './piece.component.html',
   styleUrls: ['./styles.scss', './piece.component.scss'],
+  standalone: false,
 })
 export class PieceComponent implements OnInit {
   // 2 numbers for face-up or undefined for face-down

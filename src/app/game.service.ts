@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 
 import { Observable, timer, EMPTY, throwError } from 'rxjs';
 import {
@@ -13,14 +13,14 @@ import {
 } from 'rxjs/operators';
 
 import { Game } from './game';
-
+import { environment } from '../environments/environment';
 import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  private gamesUrl = 'https://dominoes-backend.herokuapp.com'; // URL to web api
+  private gamesUrl = environment.gamesUrl; // URL to web api
   private etags: { [url: string]: string } = {}; // url => etag
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   private player: string;
@@ -65,7 +65,12 @@ export class GameService {
     return this.http
       .get<T>(url, { observe: 'response', headers })
       .pipe(
-        tap((resp) => (this.etags[url] = resp.headers.get('Etag'))),
+        tap((resp) => {
+          const etag = resp.headers.get('Etag');
+          if (etag) {
+            this.etags[url] = etag;
+          }
+        }),
         map((resp) => resp.body),
         catchError(this.handleError<T>(operation))
       );
@@ -136,7 +141,7 @@ export class GameService {
 
   pickPlayer(player: string): Observable<void> {
     const url = `${this.gamesUrl}/players/${player}`;
-    const password = `${uuid()}`;
+    const password = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : uuid();
     return this.http
       .put<void>(url, { password }, { headers: this.headers })
       .pipe(
@@ -149,16 +154,16 @@ export class GameService {
         catchError(
           (error: any): Observable<void> => {
             this.resetPlayer();
-            return throwError(error);
+            return throwError(() => error);
           }
         )
       );
   }
 
   private storeCreds(player: string, password: string) {
-    const cookieOptions = { expires: this.minutesFromNow(30) };
-    this.cookieService.put(this.cookiePlayer, player, cookieOptions);
-    this.cookieService.put(this.cookiePassword, password, cookieOptions);
+    const expires = this.minutesFromNow(30);
+    this.cookieService.set(this.cookiePlayer, player, { expires });
+    this.cookieService.set(this.cookiePassword, password, { expires });
   }
 
   /** DELETE: reset the player */
@@ -202,7 +207,7 @@ export class GameService {
       console.error(error); // log to console instead
       console.log(`${operation} failed: ${error.message}`);
       delete this.etags[error.url];
-      return throwError(error);
+      return throwError(() => error);
     };
   }
 
@@ -227,7 +232,7 @@ export class GameService {
   resetPlayer() {
     this.player = undefined;
     this.password = undefined;
-    this.cookieService.remove(this.cookiePlayer);
-    this.cookieService.remove(this.cookiePassword);
+    this.cookieService.delete(this.cookiePlayer);
+    this.cookieService.delete(this.cookiePassword);
   }
 }

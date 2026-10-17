@@ -69,9 +69,10 @@ export class PositionCalculator {
         this.turnFromDown(this.positions[0]);
       } else {
         this.turnFromDown(this.positions[0]);
-        if (this.leftDirection === Direction.LEFT) {
+        const currentLeftDir = this.leftDirection as number;
+        if (currentLeftDir === Direction.LEFT) {
           this.leftEndPutLeft(piece);
-        } else if (this.leftDirection === Direction.RIGHT) {
+        } else if (currentLeftDir === Direction.RIGHT) {
           this.leftEndPutRight(piece);
         } else {
           throw new Error(
@@ -115,9 +116,10 @@ export class PositionCalculator {
         this.turnFromUp(this.positions[this.positions.length - 1]);
       } else {
         this.turnFromUp(this.positions[this.positions.length - 1]);
-        if (this.rightDirection === Direction.RIGHT) {
+        const currentRightDir = this.rightDirection as number;
+        if (currentRightDir === Direction.RIGHT) {
           this.rightEndPutRight(piece);
-        } else if (this.leftDirection === Direction.LEFT) {
+        } else if ((this.leftDirection as number) === Direction.LEFT) {
           this.rightEndPutLeft(piece);
         } else {
           throw new Error(

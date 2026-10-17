@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-end-game',
   templateUrl: './end-game.component.html',
   styleUrls: ['./end-game.component.scss'],
+  standalone: false,
 })
 export class EndGameComponent implements OnInit {
   @Output() endGame = new EventEmitter<void>();
@@ -27,17 +28,16 @@ export class EndGameComponent implements OnInit {
 
 @Component({
   selector: 'app-end-game-confirm',
+  standalone: false,
   template: `
     <div class="modal-header">
       <h4 class="modal-title" id="modal-title">Confirm</h4>
       <button
         type="button"
-        class="close"
+        class="btn-close"
         aria-describedby="modal-title"
         (click)="modal.dismiss('cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+      ></button>
     </div>
     <div class="modal-body">
       <p>
